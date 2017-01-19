@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.signDao" >   
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.Sign" >
+    <result column="custom_num" property="custom_num" jdbcType="VARCHAR" />
+    <result column="signin_date" property="signin_date" jdbcType="VARCHAR" />
+    <result column="signin_time" property="signin_time" jdbcType="INTEGER" />
+  </resultMap>
+    <sql id="Base_Column_List" >
+    custom_num, signin_date, signin_time
+  </sql>
+  <insert id="insertSigninout" parameterType="com.cn.hnust.pojo.Sign" >
+    insert into Ins_Sign (custom_num,signin_date, signin_time )
+    values (#{custom_num,jdbcType=VARCHAR}, #{signin_date,jdbcType=VARCHAR}, #{signin_time,jdbcType=VARCHAR})
+  </insert>   
+  
+  <select id="querySigninout"  resultType="int" >
+    select   count(*)   from Ins_Sign
+    where custom_num = #{custom_num,jdbcType=VARCHAR} and signin_date = #{signin_date,jdbcType=VARCHAR} 
+  </select>    
+  
+  <select id="querySignListBydate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Sign where signin_date= #{signin_date,jdbcType=VARCHAR} order by signin_date,signin_time
+    </select>
+</mapper>

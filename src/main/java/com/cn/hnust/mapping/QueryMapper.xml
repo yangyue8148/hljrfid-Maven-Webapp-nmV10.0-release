@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.IQuerytaskDao">
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.Querytask" >
+    <result column="Task_id" property="Task_id" jdbcType="VARCHAR" />
+    <result column="classid" property="Class_id" jdbcType="VARCHAR" />
+    <result column="Date" property="Date" jdbcType="VARCHAR" />
+    <result column="Status" property="Status" jdbcType="VARCHAR" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    Task_id, classid, Date, Status
+  </sql>
+  
+  <select id="selectByusername" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Task_Info where Operator_first =#{username,jdbcType=VARCHAR} or Operator_second =#{username,jdbcType=VARCHAR} 
+  </select>
+  
+
+    
+  <update  id="updatetaskstatus"  parameterType="java.lang.String" >
+      update Ins_Task_Info set Status ='1' where Task_id =#{task_id,jdbcType=VARCHAR} 
+  </update>
+  
+  <select id="getQueryitemByoperid" resultMap="BaseResultMap"  parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Task_Info      
+     <where>  
+        <if test="operaotor_id !=null and operaotor_id !='' ">  
+        ( Operator_first =#{operaotor_id}  or   Operator_second =#{operaotor_id} )
+       </if>  
+       <if test="date_time !=null and date_time !=''">  
+       and  Date = #{date_time}  
+       </if>  
+         <if test="class_id !=null and class_id !='' ">  
+        and  classid =#{class_id}
+       </if>  
+       and Status in ('0','1')
+       </where>         
+  </select>
+  
+  <select id="QueryTaskStatus" resultMap="BaseResultMap"  parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Task_Info      
+     <where>         
+       <if test="date_time !=null and date_time !=''">  
+       and  Date = #{date_time}  
+       </if>  
+       <if test="Class_id !=null and Class_id !='' ">  
+        and  classid = #{Class_id}
+        </if>  
+      <!--  and Status in ('0','1','2') -->
+     </where>
+  </select>
+    <select id="QueryTaskAll" resultMap="BaseResultMap"  parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Task_Info      
+     <where>         
+       <if test="Year_month !=null and Year_month !=''">  
+       and  Year_month = #{Year_month}  
+       </if> 
+     </where>
+  </select>
+  
+  	<select id="queryAllTask" resultMap="BaseResultMap" >
+		select 
+		<include refid="Base_Column_List" />
+		from Ins_Task_Info where Date >= #{yesterday,jdbcType=VARCHAR}
+		 and Date  &lt; #{yesterday,jdbcType=VARCHAR}		
+	</select>	
+	
+  
+</mapper>

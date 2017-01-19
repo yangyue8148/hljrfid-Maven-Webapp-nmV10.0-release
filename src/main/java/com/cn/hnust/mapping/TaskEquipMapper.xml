@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.TaskEquipDao">
+	<resultMap id="BaseResultMap" type="com.cn.hnust.pojo.TaskEquip">
+		<result column="Equip_id" property="equipId" jdbcType="VARCHAR" />
+		<result column="Ins_state" property="insState" jdbcType="VARCHAR" />
+		<result column="Ins_task" property="insTask" jdbcType="VARCHAR" />
+		<result column="Ins_date" property="insDate" jdbcType="VARCHAR" />
+		<result column="Class_id" property="classId" jdbcType="VARCHAR" />
+		<result column="Ins_time" property="insTime" jdbcType="VARCHAR" />
+		<result column="Pic_url" property="picUrl" jdbcType="VARCHAR" />
+		<result column="Operator" property="operator" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectTaskError" resultType="com.cn.hnust.pojo.TaskEquip"
+		parameterType="java.lang.String">
+		<!--ins_State =2 表示设备异常 -->
+		select * from Ins_Task_Equip where Class_id
+		=#{classId,jdbcType=VARCHAR} and Ins_state = '2'
+	</select>
+</mapper>

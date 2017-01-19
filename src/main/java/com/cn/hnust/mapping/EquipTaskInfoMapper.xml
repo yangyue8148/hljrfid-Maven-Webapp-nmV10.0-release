@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.EquipTaskInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.EquipInfoMapper" >
+    <result column="Equip_id" property="equipId" jdbcType="VARCHAR" />
+    <result column="Responsible" property="responsible" jdbcType="VARCHAR" />
+    <result column="Product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="Equip_type" property="equipType" jdbcType="VARCHAR" />
+    <result column="Equip_name" property="equipName" jdbcType="VARCHAR" />
+    <result column="Equip_spec" property="equipSpec" jdbcType="VARCHAR" />
+    <result column="Install_location" property="installLocation" jdbcType="VARCHAR" />
+    <result column="Cabinet_position" property="cabinetPosition" jdbcType="VARCHAR" />
+    <result column="Storage_time" property="storageTime" jdbcType="VARCHAR" />
+    <result column="Warranty_period" property="warrantyPeriod" jdbcType="VARCHAR" />
+    <result column="Supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="User_department" property="userDepartment" jdbcType="VARCHAR" />
+    <result column="Contact" property="contact" jdbcType="VARCHAR" />
+    <result column="Remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="Flag" property="flag" jdbcType="VARCHAR" />
+    <result column="Ename" property="ename" jdbcType="VARCHAR" />
+    <association property="teacher" javaType="com.cn.hnust.pojo.TaskEquip">
+        <result column="Equip_id" property="equipId" jdbcType="VARCHAR" />
+		<result column="Ins_state" property="insState" jdbcType="VARCHAR" />
+		<result column="Ins_task" property="insTask" jdbcType="VARCHAR" />
+		<result column="Ins_date" property="insDate" jdbcType="VARCHAR" />
+		<result column="Class_id" property="classId" jdbcType="VARCHAR" />
+		<result column="Ins_time" property="insTime" jdbcType="VARCHAR" />
+		<result column="Pic_url" property="picUrl" jdbcType="VARCHAR" />
+		<result column="Operator" property="operator" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+ 
+   <select id="getNoChekcEquipment" parameterType="int" resultMap="BaseResultMap">
+         select * from Ins_Task_Equip c, Ins_Equipment_Info t where c.Equip_id=t.Equip_id 
+   </select>
+</mapper>

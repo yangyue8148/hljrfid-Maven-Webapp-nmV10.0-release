@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+ <beans xmlns="http://www.springframework.org/schema/beans"  
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+     xmlns:context="http://www.springframework.org/schema/context"  
+     xmlns:mvc="http://www.springframework.org/schema/mvc"  
+     xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+                         http://www.springframework.org/schema/context    
+                         http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+                         http://www.springframework.org/schema/mvc   
+                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+                         "> 
+                                         
+	<!-- 线程执行器配置，用于任务注册 -->
+	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 <property name="corePoolSize" value="10" />
+	 <property name="maxPoolSize" value="100" />
+	 <property name="queueCapacity" value="500" />
+	</bean>  
+
+	<!-- 业务对象 -->
+	<bean id="bizObject" class="com.cn.hnust.timeservice.ExpireJobTask" />    
+	<bean id="message" class="com.cn.hnust.timeservice.HeadMsg" />
+	<bean id="workOrderremind" class="com.cn.hnust.timeservice.WorkOrderRemind" />
+	
+	
+	
+	<!-- 调度业务 -->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <!--false表示等上一个任务执行完后再开启新的任务-->
+	 <property name="concurrent" value="false"/>
+	 <property name="targetObject" ref="bizObject" />
+	 <property name="targetMethod" value="doBiz" />	 
+	</bean>
+	
+	 <bean id="sendMessage" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	 <!--  false表示等上一个任务执行完后再开启新的任务 -->
+	 <property name="concurrent" value="false"/>
+	 <property name="targetObject" ref="message" />
+	 <property name="targetMethod" value="doBiz" />	 
+	</bean> 
+	
+	 <bean id="unTreadWorkOrderId" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	 <!--  false表示等上一个任务执行完后再开启新的任务 -->
+	 <property name="concurrent" value="false"/>
+	 <property name="targetObject" ref="workOrderremind" />
+	 <property name="targetMethod" value="unTreadWorkOrder" />	 
+	</bean> 
+	
+	<bean id="unResolvedWorkOrderId" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	 <!--  false表示等上一个任务执行完后再开启新的任务 -->
+	 <property name="concurrent" value="false"/>
+	 <property name="targetObject" ref="workOrderremind" />
+	 <property name="targetMethod" value="unResolvedWorkOrder" />	 
+	</bean>
+
+	
+	<!--增加调度触发器  -->
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	 <property name="jobDetail" ref="jobDetail" />
+	<!--  <property name="cronExpression" value="0 50 23 L * ?" />	-->
+	<property name="cronExpression" value="0 1/2 * * * ?" /> 
+	</bean>	
+	<!--增加调度触发器  -->
+	 <bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	 <property name="jobDetail" ref="sendMessage" />
+	<property name="cronExpression" value="0 1/5 * * * ?" />	
+	</bean>		
+	<!--增加调度触发器  -->
+	 <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	 <property name="jobDetail" ref="unTreadWorkOrderId" />
+	 <property name="cronExpression" value="0 20 1/12 * * ?" />	
+	</bean>		
+    <!--增加调度触发器  -->
+	 <bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	 <property name="jobDetail" ref="unResolvedWorkOrderId" />
+	 <property name="cronExpression" value="0 50 1/12 * * ?" />	
+	 </bean>	
+
+	<!-- 设置调度 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	 <property name="triggers">
+	  <list>
+	   <ref bean="cronTrigger" />	
+	   <ref bean="cronTrigger1" />
+	   <ref bean="cronTrigger2" />
+	   <ref bean="cronTrigger3" />
+	  </list>
+	 </property>		 
+	</bean>
+</beans>

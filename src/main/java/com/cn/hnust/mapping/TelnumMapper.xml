@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.TelnumDao">
+	<resultMap id="TelMap" type="com.cn.hnust.pojo.Telnum">
+		<result column="contact_tel" property="contact_tel" jdbcType="VARCHAR" />
+		<result column="send_time" property="send_time" jdbcType="VARCHAR" />
+		<result column="send_flag" property="send_flag" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="QueryTelnum" resultMap="TelMap" parameterType="java.lang.String">
+		select contact_tel,send_time,send_flag from Ins_Contact_info where 	contact_type =#{contact_type,jdbcType=VARCHAR}
+	</select>
+</mapper>
+

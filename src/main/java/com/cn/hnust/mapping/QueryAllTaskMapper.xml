@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.QueryAllTaskDao">
+    <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.TaskInfo" >
+    <result column="Status" property="status" jdbcType="VARCHAR" />
+    <result column="Date" property="date" jdbcType="VARCHAR" />   
+    <result column="classid" property="classId" jdbcType="VARCHAR" />   
+  </resultMap>
+   <sql id="Base_Column_List" >
+    Status ,Date ,classid
+  </sql>
+	<select id="queryAllTask" resultMap="BaseResultMap" parameterType="java.lang.String"  >
+		select
+		  <include refid="Base_Column_List" />
+        from Ins_Task_Info where (Date = #{yesterday,jdbcType=VARCHAR} or Date = #{today,jdbcType=VARCHAR})
+	</select>
+</mapper>

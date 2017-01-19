@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.SavedevinfoDao">
+	<insert id="insertsavetask" parameterType="com.cn.hnust.pojo.Savedevinfo">
+		insert into Ins_Task_Equip (Equip_id,Ins_task, Ins_state, Ins_date,
+		Pic_url,Class_id,Ins_time,Operator,Pic_Num)
+		values (#{devicecode,jdbcType=VARCHAR}, #{task_id,jdbcType=VARCHAR},
+		#{rdnflag,jdbcType=VARCHAR},#{datetime,jdbcType=VARCHAR},
+		#{fileName,jdbcType=VARCHAR},
+		#{banci,jdbcType=VARCHAR},#{strTime,jdbcType=VARCHAR},
+		#{operator_id,jdbcType=VARCHAR}, #{picNum,jdbcType=VARCHAR})
+	</insert>
+	<select id="selectimage" resultType="byte[]" parameterType="java.lang.String">
+		select bitimage from Ins_Task_Equip where Equip_id
+		=#{devicecode,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByOperatorTime" resultType="int"
+		parameterType="java.util.Map">
+		select count(*)
+		from Ins_Task_Equip
+		<where>
+			<if test="Datetime !=null and Datetime !='' ">
+				Ins_date =#{Datetime}
+			</if>
+			<if test="Class_id !=null and Class_id !=''">
+				and Class_id = #{Class_id}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateTask" parameterType="com.cn.hnust.pojo.Savedevinfo">
+		UPDATE Ins_Task_Equip set
+		Ins_task=#{task_id,jdbcType=VARCHAR},
+		Ins_state=#{rdnflag,jdbcType=VARCHAR},
+		Pic_url=#{fileName,jdbcType=VARCHAR},
+		Ins_time=#{strTime,jdbcType=VARCHAR},
+		Operator=#{operator_id,jdbcType=VARCHAR},
+		Pic_Num=#{picNum,jdbcType=VARCHAR}
+		where Equip_id=#{devicecode,jdbcType=VARCHAR} and Class_id=#{banci,jdbcType=VARCHAR} and Ins_date=#{datetime,jdbcType=VARCHAR}
+	</update>
+</mapper>

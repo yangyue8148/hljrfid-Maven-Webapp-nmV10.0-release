@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.MessageDao">
+	<resultMap id="BaseResultMap" type="com.cn.hnust.pojo.Message">
+		<result column="Mes_type" property="mesType" jdbcType="VARCHAR" />
+		<result column="Mes_data" property="mesData" jdbcType="VARCHAR" />
+		<result column="Mes_name" property="mesName" jdbcType="VARCHAR" />
+		<result column="Mes_note" property="mesNote" jdbcType="VARCHAR" />
+		<result column="Mes_sort" property="mesSort" jdbcType="INTEGER" />
+		<result column="Mes_delflag" property="mesDelflag" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getMessage" resultType="com.cn.hnust.pojo.Message"
+		parameterType="java.lang.Integer">
+		select * from Ins_Message where Mes_sort = #{i,jdbcType=VARCHAR}
+	</select>
+	<insert id="insert" parameterType="com.cn.hnust.pojo.Message">
+		insert into Ins_Message (Mes_type, Mes_data, Mes_name,
+		Mes_note, Mes_sort, Mes_delflag
+		)
+		values (#{mesType,jdbcType=VARCHAR}, #{mesData,jdbcType=VARCHAR},
+		#{mesName,jdbcType=VARCHAR},
+		#{mesNote,jdbcType=VARCHAR}, #{mesSort,jdbcType=INTEGER}, #{mesDelflag,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.hnust.pojo.Message">
+		insert into Ins_Message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mesType != null">
+				Mes_type,
+			</if>
+			<if test="mesData != null">
+				Mes_data,
+			</if>
+			<if test="mesName != null">
+				Mes_name,
+			</if>
+			<if test="mesNote != null">
+				Mes_note,
+			</if>
+			<if test="mesSort != null">
+				Mes_sort,
+			</if>
+			<if test="mesDelflag != null">
+				Mes_delflag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mesType != null">
+				#{mesType,jdbcType=VARCHAR},
+			</if>
+			<if test="mesData != null">
+				#{mesData,jdbcType=VARCHAR},
+			</if>
+			<if test="mesName != null">
+				#{mesName,jdbcType=VARCHAR},
+			</if>
+			<if test="mesNote != null">
+				#{mesNote,jdbcType=VARCHAR},
+			</if>
+			<if test="mesSort != null">
+				#{mesSort,jdbcType=INTEGER},
+			</if>
+			<if test="mesDelflag != null">
+				#{mesDelflag,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>

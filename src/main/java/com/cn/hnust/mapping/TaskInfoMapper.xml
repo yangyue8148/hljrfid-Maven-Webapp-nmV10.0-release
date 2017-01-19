@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.TaskInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.TaskInfo" >
+    <id column="Task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="Date" property="date" jdbcType="VARCHAR" />
+    <result column="classid" property="classId" jdbcType="VARCHAR" />
+    <result column="Operator_first" property="operatorFirst" jdbcType="VARCHAR" />
+    <result column="Operator_second" property="operatorSecond" jdbcType="VARCHAR" />
+    <result column="Year_month" property="yearMonth" jdbcType="VARCHAR" />
+    <result column="Status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Task_id, Date, classid, Operator_first, Operator_second, Year_month, Status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Task_Info
+    where Task_id = #{taskId,jdbcType=VARCHAR}
+  </select>  
+  
+   <select id="selectByOperatorClass" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Task_Info
+    where Date = #{date,jdbcType=VARCHAR} and classid=#{classId,jdbcType=VARCHAR} 
+  </select>
+  
+  
+  <select id="SelectMaxId" resultType="String">
+    select max(Task_id) from Ins_Task_Info 
+  </select>  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Ins_Task_Info
+    where Task_id = #{taskId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.TaskInfo" >
+    insert into Ins_Task_Info (Task_id, Date, classid, 
+      Operator_first, Operator_second, Year_month, 
+      Status)
+    values (#{taskId,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{classId,jdbcType=VARCHAR}, 
+      #{operatorFirst,jdbcType=VARCHAR}, #{operatorSecond,jdbcType=VARCHAR}, #{yearMonth,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.TaskInfo" >
+    insert into Ins_Task_Info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        Task_id,
+      </if>
+      <if test="date != null" >
+        Date,
+      </if>
+      <if test="classId != null" >
+        Class_id,
+      </if>
+      <if test="operatorFirst != null" >
+        Operator_first,
+      </if>
+      <if test="operatorSecond != null" >
+        Operator_second,
+      </if>
+      <if test="yearMonth != null" >
+        Year_month,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorFirst != null" >
+        #{operatorFirst,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorSecond != null" >
+        #{operatorSecond,jdbcType=VARCHAR},
+      </if>
+      <if test="yearMonth != null" >
+        #{yearMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>   
+   <insert id="AddRecordBath" parameterType="com.cn.hnust.pojo.TaskInfo" >
+   insert into Ins_Task_Info (Task_id,Date,classid,Year_month,Status)   
+    values
+    (#{taskId , jdbcType=VARCHAR},#{date, jdbcType=VARCHAR},#{classId, jdbcType=VARCHAR},#{yearMonth, jdbcType=VARCHAR},#{status, jdbcType=VARCHAR})  
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.TaskInfo" >
+    update Ins_Task_Info
+    <set >
+      <if test="date != null" >
+        Date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        classid = #{classId,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorFirst != null" >
+        Operator_first = #{operatorFirst,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorSecond != null" >
+        Operator_second = #{operatorSecond,jdbcType=VARCHAR},
+      </if>
+      <if test="yearMonth != null" >
+        Year_month = #{yearMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Task_id = #{taskId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.TaskInfo" >
+    update Ins_Task_Info
+    set Date = #{date,jdbcType=VARCHAR},
+      classid = #{classId,jdbcType=VARCHAR},
+      Operator_first = #{operatorFirst,jdbcType=VARCHAR},
+      Operator_second = #{operatorSecond,jdbcType=VARCHAR},
+      Year_month = #{yearMonth,jdbcType=VARCHAR},
+      Status = #{status,jdbcType=VARCHAR}
+    where Task_id = #{taskId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <!--   更新任务的状态  任务执行完毕为2 -->
+  <update  id="UpdateTaskRecord"  parameterType="com.cn.hnust.pojo.TaskInfo" >
+    update Ins_Task_Info 
+     <set >
+      <if test="status != null" >
+        Status = #{status,jdbcType=VARCHAR},
+      </if>     
+      <if test="operatorFirst != null" >
+        Operator_first = #{operatorFirst,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorSecond != null" >
+        Operator_second = #{operatorSecond,jdbcType=VARCHAR},
+      </if>        
+    </set>
+       where Task_id = #{taskId,jdbcType=VARCHAR}
+  </update>  
+
+</mapper>

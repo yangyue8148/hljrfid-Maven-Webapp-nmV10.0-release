@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.QueryEquipCountDao" >  
+  <select id="TotalEquipCount" resultType="int">
+    select count(*)   from Ins_Equipment_Info
+  </select>
+  
+   <select id="selectIsExeFlag" resultType="int" parameterType="java.util.Map">
+    select  count(*) 
+    from Ins_Task_Equip      
+     <where>  
+        <if test="ban_ci !=null and ban_ci !='' ">  
+         Class_id =#{ban_ci}    
+       </if>  
+       <if test="devicecode !=null and devicecode !=''">  
+        and  Equip_id = #{devicecode}  
+       </if>  
+        <if test="strDate !=null and strDate !=''">  
+        and  Ins_date = #{strDate} 
+        </if>       
+     </where> 
+  </select>
+  
+</mapper>

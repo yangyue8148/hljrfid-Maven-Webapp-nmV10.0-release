@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.EquipInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.EquipInfo" >
+    <result column="Equip_id" property="equipId" jdbcType="VARCHAR" />
+    <result column="Responsible" property="responsible" jdbcType="VARCHAR" />
+    <result column="Product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="Equip_type" property="equipType" jdbcType="VARCHAR" />
+    <result column="Equip_name" property="equipName" jdbcType="VARCHAR" />
+    <result column="Equip_spec" property="equipSpec" jdbcType="VARCHAR" />
+    <result column="Install_location" property="installLocation" jdbcType="VARCHAR" />
+    <result column="Cabinet_position" property="cabinetPosition" jdbcType="VARCHAR" />
+    <result column="Storage_time" property="storageTime" jdbcType="VARCHAR" />
+    <result column="Warranty_period" property="warrantyPeriod" jdbcType="VARCHAR" />
+    <result column="Supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="User_department" property="userDepartment" jdbcType="VARCHAR" />
+    <result column="Contact" property="contact" jdbcType="VARCHAR" />
+    <result column="Remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="Flag" property="flag" jdbcType="VARCHAR" />
+    <result column="Ename" property="ename" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="EqiupResultMap" type="com.cn.hnust.pojo.EquipInfo" >
+    <result column="Equip_id" property="equipId" jdbcType="VARCHAR" />   
+    <result column="Install_location" property="installLocation" jdbcType="VARCHAR" />
+    <result column="Cabinet_position" property="cabinetPosition" jdbcType="VARCHAR" />   
+  </resultMap>
+ 
+	<select id="getDepart" resultType="com.cn.hnust.pojo.EquipInfo"
+		parameterType="java.lang.String">
+		select * from Ins_Equipment_Info where Equip_id =#{equipId,jdbcType=VARCHAR}
+	</select>
+	<select id="getAllDevino" resultMap="BaseResultMap">
+		select * from Ins_Equipment_Info order by Equip_id asc
+	</select>
+	
+	<select id="getAllNoCheck" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select * from Ins_Equipment_Info t where t.Equip_id not in (select Equip_id from Ins_Task_Equip where Class_id =#{ban_ci}   and Ins_date = #{strDate}) order by Equip_id asc
+	</select>
+	
+</mapper>

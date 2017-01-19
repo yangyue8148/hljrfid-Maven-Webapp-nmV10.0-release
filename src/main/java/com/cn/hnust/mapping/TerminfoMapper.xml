@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.TermInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.Term_Info" >
+    <result column="Term_id" property="Term_id" jdbcType="VARCHAR" />
+    <result column="Term_date" property="Term_time" jdbcType="VARCHAR" />  
+  </resultMap>
+    <sql id="Base_Column_List" >
+    Term_no, Term_date
+  </sql>
+  
+  <select id="querybysn" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Term_Info
+    where Term_no = #{Term_no,jdbcType=VARCHAR} 
+  </select>  
+</mapper>

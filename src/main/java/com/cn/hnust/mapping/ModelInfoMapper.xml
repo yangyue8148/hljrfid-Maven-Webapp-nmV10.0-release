@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.ModelInfoDao">
+	<resultMap id="BaseResultMap" type="com.cn.hnust.pojo.ModelInfo">
+		<id column="Model_id" property="modelId" jdbcType="VARCHAR" />
+		<result column="Model_name" property="modelName" jdbcType="VARCHAR" />
+		<result column="Model_brand" property="modelBrand" jdbcType="VARCHAR" />
+		<result column="Model_pic" property="modelPic" jdbcType="VARCHAR" />
+		<result column="Remarks" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		Model_id, Model_name, Model_brand, Model_pic
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from Ins_Equip_Model
+		where Model_brand = #{modelBrand,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from Ins_Equip_Model
+		where Model_id = #{modelId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.cn.hnust.pojo.ModelInfo">
+		insert into Ins_Equip_Model (Model_id, Model_name, Model_brand,
+		Model_pic, Remarks)
+		values (#{modelId,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR},
+		#{modelBrand,jdbcType=VARCHAR},
+		#{modelPic,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.hnust.pojo.ModelInfo">
+		insert into Ins_Equip_Model
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="modelId != null">
+				Model_id,
+			</if>
+			<if test="modelName != null">
+				Model_name,
+			</if>
+			<if test="modelBrand != null">
+				Model_brand,
+			</if>
+			<if test="modelPic != null">
+				Model_pic,
+			</if>
+			<if test="remarks != null">
+				Remarks,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="modelId != null">
+				#{modelId,jdbcType=VARCHAR},
+			</if>
+			<if test="modelName != null">
+				#{modelName,jdbcType=VARCHAR},
+			</if>
+			<if test="modelBrand != null">
+				#{modelBrand,jdbcType=VARCHAR},
+			</if>
+			<if test="modelPic != null">
+				#{modelPic,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.ModelInfo">
+		update Ins_Equip_Model
+		<set>
+			<if test="modelName != null">
+				Model_name = #{modelName,jdbcType=VARCHAR},
+			</if>
+			<if test="modelBrand != null">
+				Model_brand = #{modelBrand,jdbcType=VARCHAR},
+			</if>
+			<if test="modelPic != null">
+				Model_pic = #{modelPic,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				Remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where Model_id = #{modelId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="java.lang.String">
+		update Ins_Equip_Model
+		set Model_pic = #{modelPic,jdbcType=VARCHAR}
+		where Model_id = #{modelId,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.QueryDXFlagDao">
+	<select id="queryFlag" resultType="String">
+		select Send_flag from
+		Ins_Send_info where Send_time =#{time,jdbcType=VARCHAR} and Tel_no =
+		#{number,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="saveFlag">
+		insert into Ins_Send_info
+		(Tel_no,Send_time,Send_flag)
+		values(#{Tel_no,jdbcType=VARCHAR},#{Send_time,jdbcType=VARCHAR},#{Send_flag,jdbcType=VARCHAR})
+	</insert>
+</mapper>

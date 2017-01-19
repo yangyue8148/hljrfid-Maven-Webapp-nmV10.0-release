@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.WorkListinfoDao" >
+<resultMap id="BaseResultMap" type="com.cn.hnust.pojo.WorkList_Info" >
+    <result column="WFlows_PSAM_ID" property="wflowsPsamId" jdbcType="CHAR" />
+    <result column="WFlows_gen_date" property="wflowsGenDate" jdbcType="CHAR" />
+    <result column="WFlows_gen_time" property="wflowsGenTime" jdbcType="CHAR" />
+    <result column="WFlows_gen_person" property="wflowsGenPerson" jdbcType="CHAR" />
+    <result column="WFlows_state" property="wflowsState" jdbcType="CHAR" />
+    <result column="WFlows_Allocation_person" property="wflowsAllocationPerson" jdbcType="CHAR" />
+    <result column="WFlows_confirm" property="wflowsConfirm" jdbcType="CHAR" />
+    <result column="WFlows_Allocation_date" property="wflowsAllocationDate" jdbcType="CHAR" />
+    <result column="WFlows_Allocation_time" property="wflowsAllocationTime" jdbcType="CHAR" />
+    <result column="WFlows_Department" property="wflowsDepartment" jdbcType="CHAR" />
+    <result column="WFlows_deal_person" property="wflowsDealPerson" jdbcType="CHAR" />
+    <result column="WFlows_feedback" property="wflowsFeedback" jdbcType="CHAR" />
+    <result column="WFlows_feedback_date" property="wflowsFeedbackDate" jdbcType="CHAR" />
+    <result column="WFlows_feedback_time" property="wflowsFeedbackTime" jdbcType="CHAR" />
+    <result column="WFlows_accept_person" property="wflowsAcceptPerson" jdbcType="CHAR" />
+    <result column="WFlows_accept_date" property="wflowsAcceptDate" jdbcType="CHAR" />
+    <result column="WFlows_accept_time" property="wflowsAcceptTime" jdbcType="CHAR" />
+    <result column="Fault_id" property="faultId" jdbcType="CHAR" />
+    <result column="Pic_Num" property="picNum" jdbcType="CHAR" />
+    <result column="Task_id" property="taskId" jdbcType="CHAR" />
+    <result column="Report_state" property="reportState" jdbcType="VARCHAR" />
+</resultMap>
+
+ <sql id="Base_Column_List">
+ WFlows_PSAM_ID,WFlows_gen_date, WFlows_state, WFlows_gen_person,WFlows_gen_time,Pic_Num,Task_id,WFlows_Department
+ </sql>
+  
+  <insert id="insertworklist"  >
+    insert into Ins_WorkList_Flows (WFlows_PSAM_ID,WFlows_gen_date, WFlows_state, WFlows_gen_person,WFlows_gen_time,Pic_Num,Task_id,WFlows_Department)
+    values (#{PSAM_ID,jdbcType=VARCHAR}, #{gen_date,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},#{gen_person,jdbcType=VARCHAR},#{gen_time,jdbcType=VARCHAR},#{picNum,jdbcType=VARCHAR},#{task_id,jdbcType=VARCHAR},#{userDepartment,jdbcType=VARCHAR})
+  </insert>  
+  <select id="queryworklist" resultType="int" >
+   select count(*)   
+   from Ins_WorkList_Flows 
+   where WFlows_PSAM_ID =#{PSAM_ID,jdbcType=VARCHAR} and (WFlows_state = '01' or WFlows_state = '02')
+  </select>
+  
+  <select id="queryWorkOrder"  resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+		<include refid="Base_Column_List" />
+        from Ins_WorkList_Flows where WFlows_state = #{wflow_satus,jdbcType=VARCHAR} 
+  </select>
+  
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.brandInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.brandInfo" >
+    <id column="Brand_id" property="brandId" jdbcType="VARCHAR" />
+    <result column="Brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="Brand_type" property="brandType" jdbcType="VARCHAR" />
+    <result column="Remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Brand_id, Brand_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Ins_Equip_Brand
+    where Brand_type = #{Brand_type,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Ins_Equip_Brand
+    where Brand_id = #{brandId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.brandInfo" >
+    insert into Ins_Equip_Brand (Brand_id, Brand_name, Brand_type, 
+      Remarks)
+    values (#{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{brandType,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.brandInfo" >
+    insert into Ins_Equip_Brand
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="brandId != null" >
+        Brand_id,
+      </if>
+      <if test="brandName != null" >
+        Brand_name,
+      </if>
+      <if test="brandType != null" >
+        Brand_type,
+      </if>
+      <if test="remarks != null" >
+        Remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="brandId != null" >
+        #{brandId,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandType != null" >
+        #{brandType,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.brandInfo" >
+    update Ins_Equip_Brand
+    <set >
+      <if test="brandName != null" >
+        Brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandType != null" >
+        Brand_type = #{brandType,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        Remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Brand_id = #{brandId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.brandInfo" >
+    update Ins_Equip_Brand
+    set Brand_name = #{brandName,jdbcType=VARCHAR},
+      Brand_type = #{brandType,jdbcType=VARCHAR},
+      Remarks = #{remarks,jdbcType=VARCHAR}
+    where Brand_id = #{brandId,jdbcType=VARCHAR}
+  </update>
+</mapper>
