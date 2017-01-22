@@ -120,7 +120,7 @@ public class SavetaskController {
 		String fileName = null;
 		String filename = null;
 		String imgStr = null;
-		String logoPathDir = "D:/bmp/";		
+		String logoPathDir = "D:/INS/tjnh/Ins_Pat/showpic";		
 		String userDepartment= null;
 		String equipType = null; 
 		String equipTypeName = null;

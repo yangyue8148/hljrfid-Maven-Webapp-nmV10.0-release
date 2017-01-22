@@ -50,7 +50,7 @@ public class SavePictureController {
 
 		map = new HashMap<String, Object>();
 
-		String logoPathDir = "D:/normalPic/";
+		String logoPathDir = "D:/INS/tjnh/Ins_Pat/showpic";
 		//String logoPathDir = "C:/normalPic/";
 		/** 根据真实路径创建目录* */
 		File logoSaveFile = new File(logoPathDir);

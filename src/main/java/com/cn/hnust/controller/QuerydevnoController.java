@@ -52,14 +52,15 @@ public class QuerydevnoController {
 	private SavedevinfoService savedevinfoService;
 	@Resource
 	private WorkListService workListService;
+
 	@SuppressWarnings("null")
 	@RequestMapping(value = "/querydevno")
 	public String taskid(HttpServletRequest request, Model model,
-			HttpServletResponse resp) throws Exception {	
+			HttpServletResponse resp) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> operatormap = new HashMap<String, Object>();
 		Map<String, Object> map_exestatusMap = new HashMap<String, Object>();
-		//HttpServletRequest multipartRequest = request;
+		// HttpServletRequest multipartRequest = request;
 		String devicecode = request.getParameter("devicecode");
 		String BanCiflag = null;
 		String BitmapPath = null;
@@ -90,32 +91,34 @@ public class QuerydevnoController {
 		Querytask querytask = this.querytaskService
 				.QueryTaskStatus((Map<String, Object>) operatormap);
 		if (querytask == null) {
-				//以上为  新加代码   为实现巡检任务完成后继续修改状态
-				map.put("status", false);
-				map.put("msg", "当前班次已执行完成");
+			// 以上为 新加代码 为实现巡检任务完成后继续修改状态
+			map.put("status", false);
+			map.put("msg", "当前班次已执行完成");
 		} else {
 			task_id = querytask.getTask_id();
 			map_exestatusMap.put("devicecode", devicecode);
 			map_exestatusMap.put("ban_ci", BanCi);
 			System.out.println("devicecode***********" + devicecode);
 			// System.out.println("task_id***********"+task_id);
-			/*if (Integer.parseInt(BanCi) >= 6) {
-				
-				 * 计算昨天
-				 
-				formatter = new SimpleDateFormat("yyyyMMdd");
-				befordate = DateUtils.getNextDay(date);
-				strDate = formatter.format(befordate);
-			}*/
+			/*
+			 * if (Integer.parseInt(BanCi) >= 6) {
+			 * 
+			 * 计算昨天
+			 * 
+			 * formatter = new SimpleDateFormat("yyyyMMdd"); befordate =
+			 * DateUtils.getNextDay(date); strDate =
+			 * formatter.format(befordate); }
+			 */
 			map_exestatusMap.put("strDate", strDate);
 			System.out.println("BanCi***********" + BanCi);
 			System.out.println("operator_id***********" + operaotor_id);
 			// 判断设备是否已经做过巡检
 			int IsExtFlag = this.QueryEquipCountService
 					.selectIsExeFlag(map_exestatusMap);
-			//获得需修改已巡检设备或未巡检设备
+			// 获得需修改已巡检设备或未巡检设备
 			if ("1".equals(againScann) || IsExtFlag <= 0) {
-				Querydevno querydevno = this.querydevnoService.getQueryById(devicecode);
+				Querydevno querydevno = this.querydevnoService
+						.getQueryById(devicecode);
 				if (querydevno != null) {
 					map.put("status", true);
 					map.put("data", querydevno.getEquip_name());
@@ -125,11 +128,16 @@ public class QuerydevnoController {
 					if ("1".equals(againScann)) {
 						map.put("isAgain", "1");
 					}
+					// /
 					// 上传图片到数据采集终端
-					BitmapPath = "D:" + File.separator + "normalPic"
-							+ File.separator + querydevno.getEquip_spec()
-							+ ".jpg";
+					// BitmapPath = "D:" + File.separator + "INS"+
+					// File.separator + querydevno.getEquip_spec()
+					// + ".jpg";
+					
+					BitmapPath = "D:/INS/tjnh/Ins_Pat/showpic/"
+							+ querydevno.getEquip_spec() + ".jpg";
 					System.out.println(BitmapPath);
+					
 					File file = new File(BitmapPath);
 					if (file.exists()) {
 						String bitmapString = ProxyImage
@@ -143,21 +151,25 @@ public class QuerydevnoController {
 							"00");
 					System.out.println("rtn_worklist" + rtn_worklist);
 					if (rtn_worklist == 0) {
-						map.put("isWorkOrder","00");
-					}else
-					{
-						map.put("isWorkOrder","01");
+						map.put("isWorkOrder", "00");
+					} else {
+						map.put("isWorkOrder", "01");
 					}
-					
-					int totalequipcount = this.QueryEquipCountService.TotalEquipCount();
+
+					int totalequipcount = this.QueryEquipCountService
+							.TotalEquipCount();
 					operatormap.put("Datetime", strDate);
 					operatormap.put("Class_id", BanCi);
 					int exetotalquipcount = this.savedevinfoService
 							.getExeeuquipCount(operatormap);
 					// 因为此时还有一个设备没有上传 所以当前巡检过的设备数应加1
 					exetotalquipcount++;
-					System.out.println(totalequipcount+ "                  --------------totalequipcount");
-					System.out.println(exetotalquipcount+ "                  --------------exetotalquipcount");
+					System.out
+							.println(totalequipcount
+									+ "                  --------------totalequipcount");
+					System.out
+							.println(exetotalquipcount
+									+ "                  --------------exetotalquipcount");
 					if (totalequipcount - exetotalquipcount == 1
 							|| totalequipcount - exetotalquipcount == 0) {
 						// map.put("status", true);
@@ -171,9 +183,9 @@ public class QuerydevnoController {
 				}
 
 			} else {
-					map.put("status", false);
-					map.put("msg", "该设备已巡检");
-					map.put("dxflag", "00");
+				map.put("status", false);
+				map.put("msg", "该设备已巡检");
+				map.put("dxflag", "00");
 				/************************************ end *******************************/
 			}
 
